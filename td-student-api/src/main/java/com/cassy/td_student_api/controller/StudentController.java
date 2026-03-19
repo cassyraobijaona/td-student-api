@@ -19,4 +19,22 @@ public class StudentController {
     public List<Student> addStudents(@RequestBody List<Student> students) {
         return studentService.addStudents(students);
     }
+
+    @GetMapping("/students")
+    public String getStudents(@RequestHeader(value = "Accept", required = false) String accept) {
+
+        if (accept == null || !accept.equals("text/plain")) {
+            return "Format non supporté";
+        }
+
+        List<Student> students = studentService.getStudents();
+
+        String result = "";
+
+        for (Student s : students) {
+            result += s.getFirstName() + " " + s.getLastName() + "\n";
+        }
+
+        return result;
+    }
 }
